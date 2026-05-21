@@ -1,0 +1,81 @@
+# GPS Location Tracking & Geo-Fencing Implementation Plan
+
+## Scope Summary
+
+Implementing location-related features across the AryanVeda DMS system:
+
+### 1. GPS Coordinates in Attendance Marking
+- Add `latitude`, `longitude`, `locationAddress` to attendance model/types
+- Capture GPS on attendance mark (frontend geolocation API)
+- Store coordinates in backend
+- Display location link in attendance history
+
+### 2. GPS Coordinates in Beat Visits (I Am Here = Beat Visit rename)
+- Add `latitude`, `longitude`, `locationAddress` to retailer visit model
+- Capture GPS during beat visit creation
+- Display location in visit history
+
+### 3. GPS Location Tracking Module (New)
+- **Backend**: New `location` module (model, controller, service, routes)
+- **Frontend**: New `location.service.ts`, GPS tracking page, team map view
+- Periodic GPS track submission for SO/ASM/RSM
+- Manager view for tracking team locations
+
+### 4. Geo-Fencing
+- Define territory boundaries (center point + radius)
+- Outstation detection for attendance
+- Alert when user marks attendance outside assigned territory
+
+---
+
+## Files to Create/Modify
+
+### Backend
+| Action | File |
+|--------|------|
+| Modify | `backend/src/modules/attendance/attendance.model.ts` |
+| Modify | `backend/src/modules/attendance/attendance.service.ts` |
+| Modify | `backend/src/modules/attendance/attendance.controller.ts` |
+| Modify | `backend/src/modules/attendance/attendance.repository.ts` |
+| Modify | `backend/src/modules/retailer-visit/retailerVisit.model.ts` |
+| Modify | `backend/src/modules/retailer-visit/retailerVisit.controller.ts` |
+| Modify | `backend/src/modules/retailer-visit/retailerVisit.service.ts` |
+| Create | `backend/src/modules/location/location.model.ts` |
+| Create | `backend/src/modules/location/location.repository.ts` |
+| Create | `backend/src/modules/location/location.service.ts` |
+| Create | `backend/src/modules/location/location.controller.ts` |
+| Create | `backend/src/modules/location/location.routes.ts` |
+| Create | `backend/src/modules/location/index.ts` |
+| Create | `backend/src/modules/geofence/geofence.model.ts` |
+| Create | `backend/src/modules/geofence/geofence.service.ts` |
+| Create | `backend/src/modules/geofence/geofence.controller.ts` |
+| Create | `backend/src/modules/geofence/geofence.routes.ts` |
+| Create | `backend/src/modules/geofence/index.ts` |
+| Modify | `backend/src/app.ts` |
+
+### Frontend
+| Action | File |
+|--------|------|
+| Modify | `frontend/src/types/index.ts` |
+| Modify | `frontend/src/services/attendance.service.ts` |
+| Modify | `frontend/src/services/visit.service.ts` |
+| Create | `frontend/src/services/location.service.ts` |
+| Create | `frontend/src/hooks/useGeolocation.ts` |
+| Modify | `frontend/src/app/attendance/attendance-client.tsx` |
+| Modify | `frontend/src/app/beat-visits/beat-visits-client.tsx` |
+| Create | `frontend/src/app/gps-tracking/page.tsx` |
+| Create | `frontend/src/app/gps-tracking/gps-tracking-client.tsx` |
+| Create | `frontend/src/app/admin/geofence/page.tsx` |
+| Create | `frontend/src/app/admin/geofence/geofence-client.tsx` |
+| Modify | `frontend/src/components/layout/nav-items.ts` |
+
+---
+
+## Execution Order
+1. Backend models (attendance GPS, visit GPS, location tracking, geofence)
+2. Backend services & controllers
+3. Backend routes & app.ts mounting
+4. Frontend types & hooks (useGeolocation)
+5. Frontend services
+6. Frontend pages (attendance update, beat visits update, GPS tracking page, geofence admin)
+7. Navigation updates
